@@ -47,15 +47,18 @@
   background: #6C95BB;
   width: 100%;
   border: 0;
+  border-radius: 5px;
   padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+
 .forma button:hover,.form button:active,.form button:focus {
-  background: #6C95BB;
+  background: #a6bfd6;
 }
 .forma .message {
   margin: 15px 0 0;
@@ -125,7 +128,7 @@ body {
                 <option value="2">Médico(a)</option>
             </select>
             <label></label>
-            <button id="enviar">Cadastrar</button>
+            <button class="btn-aceitar" id="enviar">Cadastrar</button>
             <p class="message">Ja tem uma conta? <a href="/">faça seu login</a></p>
         </div>
     </div>

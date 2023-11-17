@@ -12,57 +12,63 @@ public class S_Usuario {
     private static R_Usuario r_usuario;
 
     public S_Usuario(R_Usuario r_usuario) {
-        this.r_usuario =  r_usuario;
+        this.r_usuario = r_usuario;
     }
 
     public static M_Usuario verificaLogin(String CPF, String senha){
         CPF = S_Generico.limparNumero(CPF);
 
-        if(S_Generico.textoEstaVazio(CPF)){
-            return null;
-        }else if(S_Generico.textoEstaVazio(senha)){
+        if(S_Generico.textoEstaVazio(CPF) || S_Generico.textoEstaVazio(senha)){
             return null;
         }
-        return r_usuario.buscarPorCpfSenha(Long.parseLong(CPF),
-                senha);
+
+        return r_usuario.buscarPorCpfSenha(Long.parseLong(CPF), senha);
     }
 
-    public static String cadastrarUsuario(String nome, String email, String CPF, String senha, String relacao) {
+    public static M_Resposta cadastrarUsuario(String nome, String email, String CPF, String senha, String relacao) {
         boolean podeSalvar = true;
         String mensagem = "";
+
         if(S_Generico.textoEstaVazio(nome)){
             podeSalvar = false;
-            mensagem += "O nome precisa ser preenchido!";
+            mensagem += "|Nome inválido| ";
         }
         if(!S_Generico.validarEmail(email)){
             podeSalvar = false;
-            mensagem += "E_Mail invalido, tente novamente";
+            mensagem += "|E-Mail inválido| ";
         }
-        if(S_Generico.textoEstaVazio(S_Generico.limparNumero(CPF))){
+        if(S_Generico.textoEstaVazio(CPF) || !S_Generico.validarCPF(CPF)){
             podeSalvar = false;
-            mensagem += "O CPF precisa ser informada!";
+            mensagem += "|CPF inválido| ";
         }
-        if(S_Generico.textoEstaVazio(S_Generico.limparNumero(relacao))){
+        if(S_Generico.textoEstaVazio(relacao)){
             podeSalvar = false;
-            mensagem += "A relação precisa ser informada!";
+            mensagem += "|Relação inválida| ";
         }
+        if(S_Generico.textoEstaVazio(senha) || !S_Generico.validarSenha(senha)){
+            podeSalvar = false;
+            mensagem += "|Senha inválida| ";
+        }
+
         if(podeSalvar){
             M_Usuario m_usuario = new M_Usuario();
             m_usuario.setNome(nome);
             m_usuario.setEmail(email);
-            m_usuario.setCPF(Long.parseLong(CPF));
-            m_usuario.setId_relacao(Long.parseLong(relacao));
+            m_usuario.setCPF(Long.parseLong(S_Generico.limparNumero(CPF)));
+            m_usuario.setId_relacao(Long.parseLong(S_Generico.limparNumero(relacao)));
             m_usuario.setSenha(senha);
 
             try{
                 r_usuario.save(m_usuario);
-                mensagem += "Cadastro realizado com sucesso";
+                mensagem += "Cadastro realizado com sucesso, clique em OK para continuar";
             }catch (DataIntegrityViolationException e){
                 mensagem += "Algo deu errado, tente novamente";
+                podeSalvar = false;
             }
         }
-        return mensagem;
+        return new M_Resposta(podeSalvar,mensagem);
     }
+
     public static M_Resposta updateUsuario(String nome,String email, String senhaAtual,
                                            String novaSenha, String confSenha, Object usuario){
         boolean podeEditar = false;
@@ -78,11 +84,11 @@ public class S_Usuario {
             }
             if(!S_Generico.validarEmail(email)){
                 podeEditar = false;
-                mensagem += "e-Mail Inválido!";
+                mensagem += "E-mail inválido!";
             }
             if(!novaSenha.equals(confSenha) && !S_Generico.textoEstaVazio(novaSenha)){
                 podeEditar = false;
-                mensagem += "A Nova senha e a confirmação de senha precisam ser iguais!";
+                mensagem += "A nova senha e a confirmação de senha precisam ser iguais!";
             }
 
             if(podeEditar){
@@ -105,4 +111,3 @@ public class S_Usuario {
         return new M_Resposta(podeEditar,mensagem);
     }
 }
-

@@ -8,22 +8,26 @@ import java.util.regex.Pattern;
 @Service
 public class S_Generico {
     public static boolean validarEmail(String email) {
-        // Defina a expressão regular para validar o e-mail
         String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        // Crie o objeto de padrão
         Pattern pattern = Pattern.compile(regex);
-        // Crie o objeto de correspondência
         Matcher matcher = pattern.matcher(email);
-        // Realize a correspondência e retorne true se o e-mail for válido
         return matcher.matches();
     }
 
-    public static boolean textoEstaVazio(String texto){
+    public static boolean textoEstaVazio(String texto) {
         return texto == null || texto.trim().equals("");
     }
 
     public static String limparNumero(String numero) {
-        // Remove caracteres, apenas os dígitos serão mantidos
         return numero.replaceAll("[^0-9]", "");
     }
+
+    public static boolean validarCPF(String cpf) {
+        return cpf.matches("^\\d{11}$");
+    }
+
+    public static boolean validarSenha(String senha) {
+        return senha.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@*#_$%^&+=!]).{10,}$");
+    }
+
 }

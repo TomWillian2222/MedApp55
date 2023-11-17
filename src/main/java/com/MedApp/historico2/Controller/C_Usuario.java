@@ -16,56 +16,65 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class C_Usuario {
 
     @GetMapping("/")
-    public String getLogin(HttpSession session){
-        if(session.getAttribute("usuario") != null) {
+    public String getLogin(HttpSession session) {
+        if (session.getAttribute("usuario") != null) {
             return "redirect:/Home";
-        }else{
+        } else {
             return "Usuario/index";
         }
     }
+
     @PostMapping("/login")
     @ResponseBody
     public boolean postLogin(@RequestParam("CPF") String CPF,
                              @RequestParam("senha") String senha,
-                             HttpSession session){
+                             HttpSession session) {
         session.setAttribute("usuario", S_Usuario.verificaLogin(CPF, senha));
-        if(session.getAttribute("usuario") == null){
+        if (session.getAttribute("usuario") == null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.setAttribute("usuario", null);
         return "redirect:/";
     }
 
     @GetMapping("/cadastro")
-    public String getCadastro(){
+    public String getCadastro() {
         return "Usuario/cadastro";
     }
+
+    @GetMapping("/termos")
+    public String getTermos() {
+        return "Usuario/termos";
+    }
+
     @PostMapping("/cadastro")
     @ResponseBody
-    public String cadastrarUsuario(@RequestParam("nome") String nome,
+    public M_Resposta cadastrarUsuario(@RequestParam("nome") String nome,
                                    @RequestParam("email") String email,
                                    @RequestParam("CPF") String CPF,
                                    @RequestParam("senha") String senha,
-                                   @RequestParam("relacao")String relacao) {
+                                   @RequestParam("relacao") String relacao) {
         return S_Usuario.cadastrarUsuario(nome, email, CPF, senha, relacao);
     }
+
     @GetMapping("/edit/usuario")
     public String getEditUsuario(HttpServletRequest request,
                                  HttpSession session,
-                                 Model model){
-        if(request.getHeader("Referer") != null) {
+                                 Model model) {
+        if (request.getHeader("Referer") != null) {
             Object usuario = session.getAttribute("usuario");
             model.addAttribute("usuario", usuario);
             return "/usuario/pv/edit_usuario";
         }
-            return "redirect:/";
-        }
+        return "redirect:/";
+    }
+
     @PostMapping("/edit/usuario")
     @ResponseBody
     public M_Resposta postEditUsuario(@RequestParam("nome") String nome,
@@ -74,8 +83,8 @@ public class C_Usuario {
                                       @RequestParam("novaSenha") String novaSenha,
                                       @RequestParam("confSenha") String confSenha,
                                       HttpSession session
-    ){
-        return S_Usuario.updateUsuario(nome,email,senhaAtual,novaSenha,confSenha, session.getAttribute("usuario"));
+    ) {
+        return S_Usuario.updateUsuario(nome, email, senhaAtual, novaSenha, confSenha, session.getAttribute("usuario"));
     }
-    }
+}
 

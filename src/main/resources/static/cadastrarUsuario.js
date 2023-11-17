@@ -18,8 +18,10 @@ function cadastrarUsuario(){
 			relacao:relacao,
 		},
 		success:function(data){
-			alert(data);
-			window.location.href="/";
+		    alert(data.mensagem);
+		    if(data.sucesso){
+			    window.location.href="/";
+			}
 		},
 		error: function(){
 			alert("Algo deu errado, tente novamente");

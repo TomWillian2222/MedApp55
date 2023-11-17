@@ -47,15 +47,18 @@
   background: #6C95BB;
   width: 100%;
   border: 0;
+  border-radius: 5px;
   padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+
 .forma button:hover,.form button:active,.form button:focus {
-  background: #6C95BB;
+  background: #a6bfd6;
 }
 .forma .message {
   margin: 15px 0 0;
@@ -117,8 +120,8 @@ body {
             <p class="text-titulo">Pagina de acesso</p>
             <input type="number" placeholder="CPF" id="CPF" required/>
             <input type="password" placeholder="Senha" id="senha" required/>
-            <button id="login">Login</button>
-            <p class="message">Sem cadastro? <a href="/cadastro">Crie uma conta</a></p>
+            <button btn-aceitar id="login">Login</button>
+            <p class="message">Sem cadastro? <a href="/termos">Crie uma conta</a></p>
         </div>
     </div>
 </div>
